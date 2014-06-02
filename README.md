@@ -1,5 +1,12 @@
 rmv
 ===
+Example commands:
+
+    rmv train_dir
+    rmv -g "*.jpg" test_dir
+    rmv -p 70 ~/downloads
+
+Usage:
 
     usage: rmv [-h] [-p PERCENT] [-g GLOB] [source] dest
 
