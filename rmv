@@ -23,6 +23,8 @@ if not isdir(args.dest):
 if not isdir(args.source):
     sys.exit("rmv: error: {} is not a directory".format(args.dest))
 
+if args.percent > 100 or args.percent < 0:
+    sys.exit("rmv: error: Invalid percentage")
 
 files = [f for f in os.listdir(args.source) if f[0] != '.' and isfile(join(getcwd(),f))]
 
