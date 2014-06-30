@@ -5,35 +5,40 @@ import argparse, random, os, math, shutil, sys, fnmatch
 from os import getcwd, listdir
 from os.path import isfile, isdir, join
 
-parser = argparse.ArgumentParser(description='Randomly moves files to a directory')
+def random_move(source, dest, glob, percent):
+    files = [f for f in os.listdir(source) if f[0] != '.']
+    files = [f for f in files if isfile(join(getcwd(),f))]
 
-parser.add_argument("source", nargs='?')
-parser.add_argument("dest")
-parser.add_argument("-p", "--percent", default=50,
-        help="The percent of the directory to move, default is 50", type=int)
-parser.add_argument("-g", "--glob", help="filters the list of files to move")
+    if glob:
+        files = [f for f in files if fnmatch.fnmatch(f, glob)]
 
-args = parser.parse_args()
+    percent = int(math.ceil(percent/100.0*len(files)))
 
-if not args.source:
-    args.source = os.getcwd()
+    for f in random.sample(files, percent):
+        shutil.move(f, dest)
 
-if not isdir(args.dest):
-    sys.exit("rmv: error: {} is not a directory".format(args.dest))
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Randomly moves files to a directory')
 
-if not isdir(args.source):
-    sys.exit("rmv: error: {} is not a directory".format(args.dest))
+    parser.add_argument("source", nargs='?')
+    parser.add_argument("dest")
+    parser.add_argument("-p", "--percent", default=50,
+            help="The percent of the directory to move, default is 50", type=int)
+    parser.add_argument("-g", "--glob", default=None,
+            help="filters the list of files to move")
 
-if args.percent > 100 or args.percent < 0:
-    sys.exit("rmv: error: Invalid percentage")
+    args = parser.parse_args()
 
-files = [f for f in os.listdir(args.source) if f[0] != '.']
-files = [f for f in files if isfile(join(getcwd(),f))]
+    if not args.source:
+        args.source = os.getcwd()
 
-if args.glob:
-    files = [f for f in files if fnmatch.fnmatch(f, args.glob)]
+    if not isdir(args.dest):
+        sys.exit("rmv error: {} is not a directory".format(args.dest))
 
-percent = int(math.ceil(args.percent/100.0*len(files)))
+    if not isdir(args.source):
+        sys.exit("rmv error: {} is not a directory".format(args.dest))
 
-for f in random.sample(files, percent):
-    shutil.move(f, args.dest)
+    if args.percent > 100 or args.percent < 0:
+        sys.exit("rmv error: Invalid percentage")
+
+    random_move(args.source, args.dest, args.glob, args.percent)
