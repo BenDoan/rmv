@@ -7,7 +7,7 @@ from os.path import isfile, isdir, join
 
 def random_move(source, dest, glob, percent):
     files = [f for f in os.listdir(source) if f[0] != '.']
-    files = [f for f in files if isfile(join(getcwd(),f))]
+    files = [f for f in files if isfile(join(source,f))]
 
     if glob:
         files = [f for f in files if fnmatch.fnmatch(f, glob)]
@@ -15,7 +15,7 @@ def random_move(source, dest, glob, percent):
     percent = int(math.ceil(percent/100.0*len(files)))
 
     for f in random.sample(files, percent):
-        shutil.move(f, dest)
+        shutil.move(join(source,f), dest)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Randomly moves files to a directory')
