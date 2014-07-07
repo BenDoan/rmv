@@ -1,41 +1,49 @@
 #!/usr/bin/env python
 # vim: set ft=python:
 
-import argparse, random, os, math, shutil, sys, fnmatch
-from os import getcwd, listdir
-from os.path import isfile, isdir, join
+import argparse
+import random
+import os
+import math
+import shutil
+import sys
+import fnmatch
+
+from os import path
+
 
 def random_move(source, dest, glob, percent):
     files = [f for f in os.listdir(source) if f[0] != '.']
-    files = [f for f in files if isfile(join(source,f))]
+    files = [f for f in files if path.isfile(path.join(source, f))]
 
     if glob:
         files = [f for f in files if fnmatch.fnmatch(f, glob)]
 
-    percent = int(math.ceil(percent/100.0*len(files)))
+    percent = int(math.ceil(percent/100.0 * len(files)))
 
     for f in random.sample(files, percent):
-        shutil.move(join(source,f), dest)
+        shutil.move(path.join(source, f), dest)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Randomly moves files to a directory')
+    parser = argparse.ArgumentParser(
+        description='Randomly moves files to a directory')
 
     parser.add_argument("source", nargs='?')
     parser.add_argument("dest")
     parser.add_argument("-p", "--percent", default=50,
-            help="The percent of the directory to move, default is 50", type=int)
+        help="The percent of the directory to move, default is 50", type=int)
     parser.add_argument("-g", "--glob", default=None,
-            help="filters the list of files to move")
+        help="filters the list of files to move")
 
     args = parser.parse_args()
 
     if not args.source:
         args.source = os.getcwd()
 
-    if not isdir(args.dest):
+    if not path.isdir(args.dest):
         sys.exit("rmv error: {} is not a directory".format(args.dest))
 
-    if not isdir(args.source):
+    if not path.isdir(args.source):
         sys.exit("rmv error: {} is not a directory".format(args.dest))
 
     if args.percent > 100 or args.percent < 0:

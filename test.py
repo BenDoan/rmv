@@ -40,35 +40,11 @@ class TestGlob(TestDefault):
         subprocess.call(["../rmv",'-g*.txt', MOVE_DIR])
         self.assertEqual(len(os.listdir(MOVE_DIR)), NUM_FILES/2)
 
-class TestGlob(TestDefault):
-    def test_move(self):
-        for n in range(NUM_FILES):
-            with open("test%s.dat" % n, 'w+') as f:
-                f.write("test")
-        subprocess.call(["../rmv",'-g*.txt', MOVE_DIR])
-        self.assertEqual(len(os.listdir(MOVE_DIR)), NUM_FILES/2)
-
-class TestGlob(TestDefault):
-    def test_move(self):
-        for n in range(NUM_FILES):
-            with open("test%s.dat" % n, 'w+') as f:
-                f.write("test")
-        subprocess.call(["../rmv",'-g*.txt', MOVE_DIR])
-        self.assertEqual(len(os.listdir(MOVE_DIR)), NUM_FILES/2)
-
-class TestGlob(TestDefault):
-    def test_move(self):
-        for n in range(NUM_FILES):
-            with open("test%s.dat" % n, 'w+') as f:
-                f.write("test")
-        subprocess.call(["../rmv",'-g*.txt', MOVE_DIR])
-        self.assertEqual(len(os.listdir(MOVE_DIR)), NUM_FILES/2)
-
 class TestSource(TestDefault):
     def test_move(self):
         os.makedirs("nesteddir")
         os.chdir("nesteddir")
-        subprocess.call(["../../rmv","..", "../"+MOVE_DIR])
+        subprocess.call(["../../rmv","..", "../%s" % MOVE_DIR])
         os.chdir("..")
         self.assertEqual(len(os.listdir(MOVE_DIR)), NUM_FILES/2)
 
