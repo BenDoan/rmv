@@ -19,9 +19,9 @@ def random_move(source, dest, glob, percent):
     if glob:
         files = [f for f in files if fnmatch.fnmatch(f, glob)]
 
-    percent = int(math.ceil(percent/100.0 * len(files)))
+    num_files = int(math.ceil(percent/100.0 * len(files)))
 
-    for f in random.sample(files, percent):
+    for f in random.sample(files, num_files):
         shutil.move(path.join(source, f), dest)
 
 if __name__ == '__main__':
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     parser.add_argument("source", nargs='?')
     parser.add_argument("dest")
     parser.add_argument("-p", "--percent", default=50,
-        help="The percent of the directory to move, default is 50", type=int)
+        help="Percent of files to move, default=50", type=int)
     parser.add_argument("-g", "--glob", default=None,
         help="filters the list of files to move")
 

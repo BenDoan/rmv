@@ -7,7 +7,7 @@ from math import ceil
 
 TEST_DIR = "testdir"
 MOVE_DIR = "movedir"
-NUM_FILES = 100 #should be even
+NUM_FILES = 100
 
 class TestDefault(unittest.TestCase):
     def setUp(self):

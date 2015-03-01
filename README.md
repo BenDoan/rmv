@@ -2,9 +2,11 @@ rmv
 ===
 Example commands:
 
-    rmv train_dir
-    rmv -g "*.jpg" test_dir
-    rmv -p 70 ~/downloads
+```bash
+rmv train_dir # moves 50% of files in the current directory to train_dir
+rmv -g "*.jpg" test_dir # moves 50% of jpgs in the current directory to test_dir
+rmv -p 70 ~/downloads # moves 70% of files in the current directory to ~/downloads
+```
 
 Usage:
 
