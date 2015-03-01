@@ -13,7 +13,7 @@ from os import path
 
 
 def random_move(source, dest, glob, percent):
-    files = [f for f in os.listdir(source) if f[0] != '.']
+    files = [f for f in os.listdir(source) if not f.startswith('.')]
     files = [f for f in files if path.isfile(path.join(source, f))]
 
     if glob:

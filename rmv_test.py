@@ -3,9 +3,11 @@ import os
 import shutil
 import subprocess
 
+from math import ceil
+
 TEST_DIR = "testdir"
 MOVE_DIR = "movedir"
-NUM_FILES = 1000 #should be even
+NUM_FILES = 100 #should be even
 
 class TestDefault(unittest.TestCase):
     def setUp(self):
@@ -17,11 +19,11 @@ class TestDefault(unittest.TestCase):
 
         for n in range(NUM_FILES):
             with open("test%s.txt" % n, 'w+') as f:
-                f.write("test")
+                f.write("a")
 
     def test_move(self):
         subprocess.call(["../rmv", MOVE_DIR])
-        self.assertEqual(len(os.listdir(MOVE_DIR)), NUM_FILES/2)
+        self.assertEqual(len(os.listdir(MOVE_DIR)), ceil(NUM_FILES/2))
 
     def tearDown(self):
         os.chdir("..")
@@ -30,7 +32,7 @@ class TestDefault(unittest.TestCase):
 class TestPercent(TestDefault):
     def test_move(self):
         subprocess.call(["../rmv","-p 33", MOVE_DIR])
-        self.assertEqual(len(os.listdir(MOVE_DIR)), 330)
+        self.assertEqual(len(os.listdir(MOVE_DIR)), ceil(NUM_FILES*.33))
 
 class TestGlob(TestDefault):
     def test_move(self):
@@ -38,7 +40,7 @@ class TestGlob(TestDefault):
             with open("test%s.dat" % n, 'w+') as f:
                 f.write("test")
         subprocess.call(["../rmv",'-g*.txt', MOVE_DIR])
-        self.assertEqual(len(os.listdir(MOVE_DIR)), NUM_FILES/2)
+        self.assertEqual(len(os.listdir(MOVE_DIR)), ceil(NUM_FILES/2))
 
 class TestSource(TestDefault):
     def test_move(self):
@@ -46,7 +48,7 @@ class TestSource(TestDefault):
         os.chdir("nesteddir")
         subprocess.call(["../../rmv","..", "../%s" % MOVE_DIR])
         os.chdir("..")
-        self.assertEqual(len(os.listdir(MOVE_DIR)), NUM_FILES/2)
+        self.assertEqual(len(os.listdir(MOVE_DIR)), ceil(NUM_FILES/2))
 
 if __name__ == '__main__':
     unittest.main()
